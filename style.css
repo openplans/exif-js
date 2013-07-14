@@ -1,0 +1,19 @@
+.exifouter {
+    position: relative;
+    width: 100%;
+}
+
+.exif {
+    position: absolute;
+    bottom: 0px;
+    padding: 10px;
+    font-size: 14px;
+    background: rgba(0,0,0,0.001);
+    color: rgba(0,0,0,0);
+    min-width: 300px;
+}
+
+p:hover .exif {
+    background: rgba(0,0,0,0.6);
+    color: white;
+}
