@@ -31,16 +31,21 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 			return aBytes;
 		}
 	} else if (typeof strData == "unknown") {
-		dataLength = iDataLength || IEBinary_getLength(data);
+        data = new VBArray(strData).toArray();
+        dataLength = iDataLength || data.length;
+        this.getByteAt = function(iOffset) {
+            return data[iOffset + dataOffset];
+        }
 
-		this.getByteAt = function(iOffset) {
-			return IEBinary_getByteAt(data, iOffset + dataOffset);
-		}
+        this.getBytesAt = function(iOffset, iLength) {
+            var aBytes = [];
+            for (var i = 0; i < iLength; i++) {
+                aBytes[i] = data[(iOffset + i) + dataOffset] & 0xFF;
+            };
 
-		this.getBytesAt = function(iOffset, iLength) {
-			return new VBArray(IEBinary_getBytesAt(data, iOffset + dataOffset, iLength)).toArray();
-		}
-	}
+            return aBytes;
+        }
+    }
 
 	this.getLength = function() {
 		return dataLength;
@@ -210,8 +215,6 @@ var BinaryAjax = (function() {
 				oHTTP.setRequestHeader("Range", "bytes=" + aRange[0] + "-" + aRange[1]);
 			}
 
-			oHTTP.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 1970 00:00:00 GMT");
-
 			oHTTP.send(null);
 		} else {
 			if (fncError) fncError();
@@ -244,34 +247,3 @@ var BinaryAjax = (function() {
 
 }());
 
-/*
-document.write(
-	"<script type='text/vbscript'>\r\n"
-	+ "Function IEBinary_getByteAt(strBinary, iOffset)\r\n"
-	+ "	IEBinary_getByteAt = AscB(MidB(strBinary,iOffset+1,1))\r\n"
-	+ "End Function\r\n"
-	+ "Function IEBinary_getLength(strBinary)\r\n"
-	+ "	IEBinary_getLength = LenB(strBinary)\r\n"
-	+ "End Function\r\n"
-	+ "</script>\r\n"
-);
-*/
-
-document.write(
-	"<script type='text/vbscript'>\r\n"
-	+ "Function IEBinary_getByteAt(strBinary, iOffset)\r\n"
-	+ "	IEBinary_getByteAt = AscB(MidB(strBinary, iOffset + 1, 1))\r\n"
-	+ "End Function\r\n"
-	+ "Function IEBinary_getBytesAt(strBinary, iOffset, iLength)\r\n"
-	+ "  Dim aBytes()\r\n"
-	+ "  ReDim aBytes(iLength - 1)\r\n"
-	+ "  For i = 0 To iLength - 1\r\n"
-	+ "   aBytes(i) = IEBinary_getByteAt(strBinary, iOffset + i)\r\n"  
-	+ "  Next\r\n"
-	+ "  IEBinary_getBytesAt = aBytes\r\n" 
-	+ "End Function\r\n"
-	+ "Function IEBinary_getLength(strBinary)\r\n"
-	+ "	IEBinary_getLength = LenB(strBinary)\r\n"
-	+ "End Function\r\n"
-	+ "</script>\r\n"
-);
