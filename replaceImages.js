@@ -26,7 +26,7 @@ var replaceImage=function(im) {
             text = text + " with ISO " + iso;
             fields++;
         }
-        if(make !== null && model !== null) {
+        if(make && model) {
             /* Make sure make is not displayed twice */
             if(model.indexOf(make) === 0)
                 text = text + " (" + model;
@@ -63,11 +63,20 @@ var replaceImage=function(im) {
 };
 
 var replaceImages=function() {
+
+    var endsWith = function(str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    };
+
     allcomplete = true;
+    
     for (i = 0; i < document.images.length; ++i) {
         /* If not all images are loaded we are not done */
         if (document.images[i].complete === false) {
             allcomplete = false;
+        /* Ignore png images */
+        } else if(endsWith(document.images[i].src, "png")) {
+            document.images[i].setAttribute("processed", true);
         /* Only process images that were not already processed */
         } else if(document.images[i].getAttribute("processed") === null) {
             replaceImage(document.images[i]);
