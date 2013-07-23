@@ -7,13 +7,12 @@ Images are taken from the DOM and the gathered EXIF information can be used to u
 The original library that does the EXIF parsing was done by @jseidelin .
 The additional script in this repository can be integrated in any website where it will process all images
 and add a hover overlay with the most relevant EXIF data. Images without EXIF information are automatically ignored.
+In the image below you can see this script in action:
 
-The default is to display only some basic information like
+![](https://raw.github.com/dschanoeh/exif-js/master/example/example.png)
 
-```
-1/125 at f/11 with ISO 250 (FUJIFILM X100S at 23mm)
-```
-The script can easily be altered to generate different EXIF output.
+By default only the most basic information is displayed but the script can easily be altered to generate
+different EXIF output.
 
 
 Example
