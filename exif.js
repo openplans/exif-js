@@ -314,19 +314,9 @@ var EXIF = (function() {
             }
         }
 
-        if (img instanceof Image) {
-            BinaryAjax(img.src, function(http) {
-                handleBinaryFile(http.binaryResponse);
-            });
-        } else if (window.FileReader && img instanceof window.File) {
-            var fileReader = new FileReader();
-
-            fileReader.onload = function(e) {
-                handleBinaryFile(new BinaryFile(e.target.result));
-            };
-
-            fileReader.readAsBinaryString(img);
-        }
+        BinaryAjax(img.src, function(http) {
+            handleBinaryFile(http.binaryResponse);
+        });
     }
 
     function findEXIFinJPEG(file) {
