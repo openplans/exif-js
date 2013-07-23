@@ -26,9 +26,9 @@ var replaceImage=function(im) {
             text = text + " with ISO " + iso;
             fields++;
         }
-        if(make != null && model != null) {
+        if(make !== null && model !== null) {
             /* Make sure make is not displayed twice */
-            if(model.indexOf(make) == 0)
+            if(model.indexOf(make) === 0)
                 text = text + " (" + model;
             else
                 text = text + " (" + make + " " + model;
@@ -60,26 +60,26 @@ var replaceImage=function(im) {
 
         }
     });
-}
+};
 
 var replaceImages=function() {
     allcomplete = true;
     for (i = 0; i < document.images.length; ++i) {
         /* If not all images are loaded we are not done */
-        if (document.images[i].complete == false) {
+        if (document.images[i].complete === false) {
             allcomplete = false;
         /* Only process images that were not already processed */
-        } else if(document.images[i].getAttribute("processed") == null) {
+        } else if(document.images[i].getAttribute("processed") === null) {
             replaceImage(document.images[i]);
             document.images[i].setAttribute("processed", true);
         }
     }
 
     /* If there are images left try again after 200ms */
-    if(allcomplete == false) {
+    if(allcomplete === false) {
         setTimeout(function(){replaceImages();},200);
     }
-}
+};
 
 window.onload=replaceImages;
 
