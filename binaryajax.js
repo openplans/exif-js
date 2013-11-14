@@ -9,6 +9,7 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 	var data = strData;
 	var dataOffset = iDataOffset || 0;
 	var dataLength = 0;
+  var slice = Array.prototype.slice;
 
 	this.getRawData = function() {
 		return data;
@@ -34,11 +35,11 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 	  dataLength = iDataLength || data.byteLength;
 
 	  this.getByteAt = function(iOffset) {
-	    return (new Uint8Array(data.slice(iOffset, iOffset+1)))[0];
+	    return (new Uint8Array(slice.call(data, iOffset, iOffset+1)))[0];
 	  };
 
 	  this.getBytesAt = function(iOffset, iLength) {
-	    return (new Uint8Array(data.slice(iOffset, iOffset+iLength)));
+	    return (new Uint8Array(slice.call(data, iOffset, iOffset+iLength)));
 	  };
 	} else if (typeof strData == "unknown") {
         data = new VBArray(strData).toArray();
