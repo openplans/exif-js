@@ -13,24 +13,24 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 
 	this.getRawData = function() {
 		return data;
-	}
+	};
 
 	if (typeof strData == "string") {
 		dataLength = iDataLength || data.length;
 
 		this.getByteAt = function(iOffset) {
 			return data.charCodeAt(iOffset + dataOffset) & 0xFF;
-		}
+		};
 
 		this.getBytesAt = function(iOffset, iLength) {
 			var aBytes = [];
 
 			for (var i = 0; i < iLength; i++) {
-				aBytes[i] = data.charCodeAt((iOffset + i) + dataOffset) & 0xFF
-			};
+				aBytes[i] = data.charCodeAt((iOffset + i) + dataOffset) & 0xFF;
+			}
 
 			return aBytes;
-		}
+		};
 
 	} else if (strData instanceof ArrayBuffer) {
 		dataLength = iDataLength || data.byteLength;
@@ -49,21 +49,21 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 
 		this.getByteAt = function(iOffset) {
 			return data[iOffset + dataOffset];
-		}
+		};
 
 		this.getBytesAt = function(iOffset, iLength) {
 			var aBytes = [];
 			for (var i = 0; i < iLength; i++) {
 				aBytes[i] = data[(iOffset + i) + dataOffset] & 0xFF;
-			};
+			}
 
 			return aBytes;
-		}
+		};
 	}
 
 	this.getLength = function() {
 		return dataLength;
-	}
+	};
 
 	this.getSByteAt = function(iOffset) {
 		var iByte = this.getByteAt(iOffset);
@@ -71,22 +71,22 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 			return iByte - 256;
 		else
 			return iByte;
-	}
+	};
 
 	this.getShortAt = function(iOffset, bBigEndian) {
 		var iShort = bBigEndian ?
 			(this.getByteAt(iOffset) << 8) + this.getByteAt(iOffset + 1)
-			: (this.getByteAt(iOffset + 1) << 8) + this.getByteAt(iOffset)
+			: (this.getByteAt(iOffset + 1) << 8) + this.getByteAt(iOffset);
 		if (iShort < 0) iShort += 65536;
 		return iShort;
-	}
+	};
 	this.getSShortAt = function(iOffset, bBigEndian) {
 		var iUShort = this.getShortAt(iOffset, bBigEndian);
 		if (iUShort > 32767)
 			return iUShort - 65536;
 		else
 			return iUShort;
-	}
+	};
 	this.getLongAt = function(iOffset, bBigEndian) {
 		var iByte1 = this.getByteAt(iOffset),
 			iByte2 = this.getByteAt(iOffset + 1),
@@ -98,14 +98,14 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 			: (((((iByte4 << 8) + iByte3) << 8) + iByte2) << 8) + iByte1;
 		if (iLong < 0) iLong += 4294967296;
 		return iLong;
-	}
+	};
 	this.getSLongAt = function(iOffset, bBigEndian) {
 		var iULong = this.getLongAt(iOffset, bBigEndian);
 		if (iULong > 2147483647)
 			return iULong - 4294967296;
 		else
 			return iULong;
-	}
+	};
 
 	this.getStringAt = function(iOffset, iLength) {
 		var aStr = [];
@@ -115,18 +115,18 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 			aStr[j] = String.fromCharCode(aBytes[j]);
 		}
 		return aStr.join("");
-	}
+	};
 
 	this.getCharAt = function(iOffset) {
 		return String.fromCharCode(this.getByteAt(iOffset));
-	}
+	};
 	this.toBase64 = function() {
 		return window.btoa(data);
-	}
+	};
 	this.fromBase64 = function(strBase64) {
 		data = window.atob(strBase64);
-	}
-}
+	};
+};
 
 
 var BinaryAjax = (function() {
@@ -257,7 +257,7 @@ var BinaryAjax = (function() {
 		} else {
 			sendRequest(strURL, fncCallback, fncError);
 		}
-	}
+	};
 
 }());
 
