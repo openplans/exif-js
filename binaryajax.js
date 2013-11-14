@@ -9,7 +9,7 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 	var data = strData;
 	var dataOffset = iDataOffset || 0;
 	var dataLength = 0;
-  var slice = Array.prototype.slice;
+	var slice = Array.prototype.slice;
 
 	this.getRawData = function() {
 		return data;
@@ -31,32 +31,35 @@ var BinaryFile = function(strData, iDataOffset, iDataLength) {
 
 			return aBytes;
 		}
+
 	} else if (strData instanceof ArrayBuffer) {
-	  dataLength = iDataLength || data.byteLength;
+		dataLength = iDataLength || data.byteLength;
 
-	  this.getByteAt = function(iOffset) {
-	    return (new Uint8Array(slice.call(data, iOffset, iOffset+1)))[0];
-	  };
+		this.getByteAt = function(iOffset) {
+			return (new Uint8Array(slice.call(data, iOffset, iOffset+1)))[0];
+		};
 
-	  this.getBytesAt = function(iOffset, iLength) {
-	    return (new Uint8Array(slice.call(data, iOffset, iOffset+iLength)));
-	  };
+		this.getBytesAt = function(iOffset, iLength) {
+			return (new Uint8Array(slice.call(data, iOffset, iOffset+iLength)));
+		};
+
 	} else if (typeof strData == "unknown") {
-        data = new VBArray(strData).toArray();
-        dataLength = iDataLength || data.length;
-        this.getByteAt = function(iOffset) {
-            return data[iOffset + dataOffset];
-        }
+		data = new VBArray(strData).toArray();
+		dataLength = iDataLength || data.length;
 
-        this.getBytesAt = function(iOffset, iLength) {
-            var aBytes = [];
-            for (var i = 0; i < iLength; i++) {
-                aBytes[i] = data[(iOffset + i) + dataOffset] & 0xFF;
-            };
+		this.getByteAt = function(iOffset) {
+			return data[iOffset + dataOffset];
+		}
 
-            return aBytes;
-        }
-    }
+		this.getBytesAt = function(iOffset, iLength) {
+			var aBytes = [];
+			for (var i = 0; i < iLength; i++) {
+				aBytes[i] = data[(iOffset + i) + dataOffset] & 0xFF;
+			};
+
+			return aBytes;
+		}
+	}
 
 	this.getLength = function() {
 		return dataLength;
